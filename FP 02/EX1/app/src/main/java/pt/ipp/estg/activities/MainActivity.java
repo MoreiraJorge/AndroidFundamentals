@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         intent = new Intent(this, NewActivity.class);
 
         mButtonToast.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 int duration = Toast.LENGTH_SHORT;
                 String text = mEditText.getText().toString();
@@ -44,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mButtonNewView.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                openActivity2();
+                openNewActivityWithText();
                 // Do something in response to button click
             }
         });
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("NEW_ACTIVITY","onCreate()");
     }
 
-    private void openActivity2(){
+    private void openNewActivityWithText(){
         intent.putExtra("KEY", mEditText.getText().toString());
         startActivity(intent);
     }
