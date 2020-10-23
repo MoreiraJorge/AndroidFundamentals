@@ -18,6 +18,8 @@ public class LinearLayout extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.linear_layout);
         mButton = findViewById(R.id.button);
         mButton.setOnClickListener(this);
+
+        Log.i("MainActivity", "MainActivity layout is complete");
     }
 
     @Override
