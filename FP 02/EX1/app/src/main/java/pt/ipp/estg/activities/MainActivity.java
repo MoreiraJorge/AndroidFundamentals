@@ -12,13 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText mEditText;
     private Button mButtonToast;
     private Button mButtonNewView;
-    private Intent intent;
 
+    //Perguntar melhor maneira de fazer logica de botoes com intent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,43 +29,71 @@ public class MainActivity extends AppCompatActivity {
         mButtonToast = findViewById(R.id.button);
         mButtonNewView = findViewById(R.id.button2);
 
-        Context context = this;
-        intent = new Intent(this, NewActivity.class);
+        mButtonToast.setOnClickListener(this);
 
-        mButtonToast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int duration = Toast.LENGTH_SHORT;
-                String text = mEditText.getText().toString();
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
-                toast.show();
-                // Do something in response to button click
-            }
-        });
+        mButtonNewView.setOnClickListener(this);
 
-        mButtonNewView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openNewActivityWithText();
-                // Do something in response to button click
-            }
-        });
 
         Log.d("NEW_ACTIVITY","onCreate()");
     }
-
-    private void openNewActivityWithText(){
-        intent.putExtra("KEY", mEditText.getText().toString());
-        startActivity(intent);
-    }
-
-
 
     @Override
     protected void onStart(){
         super.onStart();
         Log.d("MAIN_ACTIVITY","onStart()");
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("MAIN_ACTIVITY","onResume()");
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d("MAIN_ACTIVITY","onPause()");
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.d("MAIN_ACTIVITY","onStop()");
+    }
+
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        Log.d("MAIN_ACTIVITY","onRestart()");
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.d("MAIN_ACTIVITY","onDestroy()");
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.button){
+            int duration = Toast.LENGTH_SHORT;
+            String text = mEditText.getText().toString();
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+
+        if(view.getId() == R.id.button2) {
+            openNewActivityWithText();
+        }
+
+    }
+
+    private void openNewActivityWithText(){
+        Intent intent = new Intent(this, NewActivity.class);
+        intent.putExtra("KEY", mEditText.getText().toString());
+        startActivity(intent);
+    }
+
 
 }

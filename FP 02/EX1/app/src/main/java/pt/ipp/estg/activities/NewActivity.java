@@ -16,6 +16,7 @@ public class NewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
         mTextView2 = findViewById(R.id.textView2);
+
         mTextView2.setText(getIntent().getStringExtra("KEY"));
         Log.d("NEW_ACTIVITY","onCreate()");
     }
