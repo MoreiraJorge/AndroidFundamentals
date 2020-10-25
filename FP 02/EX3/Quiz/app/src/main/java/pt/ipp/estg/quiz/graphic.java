@@ -4,13 +4,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class graphic extends AppCompatActivity {
+public class graphic extends AppCompatActivity implements View.OnClickListener {
+
+    private TextView correct;
+    private TextView wrong;
+    private Button mbutton3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graphic);
+
+        correct = findViewById(R.id.textView3);
+        wrong = findViewById(R.id.textView4);
+        mbutton3 = findViewById(R.id.button3);
+
+        correct.setText(getIntent().getStringExtra("CORRECT"));
+        wrong.setText(getIntent().getStringExtra("WRONG"));
+
+        mbutton3.setOnClickListener(this);
     }
 
     @Override
@@ -47,5 +63,10 @@ public class graphic extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         Log.d("GRAPHIC","onDestroy()");
+    }
+
+    @Override
+    public void onClick(View v) {
+        finish();
     }
 }
