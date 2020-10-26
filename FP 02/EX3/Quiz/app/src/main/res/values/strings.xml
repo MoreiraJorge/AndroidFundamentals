@@ -3,4 +3,5 @@
     <string name="my_awesome_quiz">My Awesome Quiz</string>
     <string name="sum">+</string>
     <string name="Next">Next</string>
+    <string name="restart">Restart</string>
 </resources>
