@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -19,9 +22,13 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "01";
+    static final String ACTION_CLICK = "pt.ipp.estg.CLICK";
+    static final String ACTION_UPDATE = "pt.ipp.estg.UPDATE_NOTIFICATION";
     private Button mButton;
     private Button mButton2;
     private Button mButton3;
+    private IntentFilter filter;
+    private MyBroadcastReceiver br;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButton.setOnClickListener(this);
         mButton2.setOnClickListener(this);
         mButton3.setOnClickListener(this);
+
+        /**
+         * Instanciar um reciever pra receber intents com
+         * filtros especificos
+         */
+        br = new MyBroadcastReceiver();
+        /**
+         * instanciar Intentfilter para adicionar filtros
+         */
+        filter = new IntentFilter(ACTION_CLICK);
+        filter.addAction(ACTION_UPDATE);
+
+        /**
+         * registar o reciever com os filtros
+         */
+        this.registerReceiver(br, filter);
     }
 
     @Override
@@ -75,10 +98,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        this.unregisterReceiver(br);
         Log.d("MAIN_ACTIVITY", "onDestroy()");
     }
 
-    private void updateNotification() {
+    public void updateNotification() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
                 R.drawable.descarregar);
 
@@ -86,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Título Alterado!")
                 .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_MAX);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
@@ -97,7 +121,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Foi Notificado!")
                 .setContentText("Este é o texto da notificação")
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+
+        /*Intent para clicar na notificaçao e abrir a app*/
+        Intent clickIntent = new Intent(this, MainActivity.class);
+        clickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent clickPendingIntent =
+                PendingIntent.getActivity(this, 0, clickIntent, 0);
+        builder.setAutoCancel(true);
+        builder.setContentIntent(clickPendingIntent);
+
+        /*intent e pending intent com action de dar update a notificação*/
+        Intent updateNotification = new Intent();
+        updateNotification.setAction(ACTION_UPDATE);
+        PendingIntent piUpdateNotification =
+                PendingIntent.getBroadcast(this,0, updateNotification, 0);
+        builder.addAction(R.drawable.ic_launcher_foreground,
+                "Update Notification", piUpdateNotification);
+
+        /*
+        Intent disableButtons = new Intent();
+        disableButtons.setAction(ACTION_CLICK);
+        PendingIntent piDisableButtons =
+                PendingIntent.getBroadcast(this,0,disableButtons,0);
+        builder.setDeleteIntent(piDisableButtons);
+        */
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
@@ -109,16 +157,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
@@ -141,5 +185,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mButton2.setEnabled(false);
             mButton3.setEnabled(false);
         }
+    }
+
+    public void disableButtons(){
+        mButton2.setEnabled(false);
+        mButton3.setEnabled(false);
     }
 }
