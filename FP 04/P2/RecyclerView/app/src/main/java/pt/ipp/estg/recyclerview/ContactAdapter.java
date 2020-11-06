@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> implements View.OnClickListener {
-    private Contacto contact;
+public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder>{
     private Context mContext;
     private List<Contacto> mContacts;
 
@@ -38,7 +37,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        contact = mContacts.get(position);
+        Contacto contact = mContacts.get(position);
 
         TextView textView = holder.nameTextView;
         textView.setText(contact.getNome());
@@ -47,7 +46,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         button.setText(contact.isOnline() ? "Message" : "Offline");
         button.setEnabled(contact.isOnline());
 
-        button.setOnClickListener(this);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, MainActivity2.class);
+                i.putExtra("CONTACT", contact);
+                mContext.startActivity(i);
+            }
+        });
 
         ImageView image = holder.contactStatus;
         if (contact.isOnline()) {
@@ -56,7 +62,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             image.setImageResource(R.drawable.red);
         }
 
-        Log.d("CONTACT_ADAPTER","onBindViewHolder");
+
+        Log.d("CONTACT_ADAPTER", "onBindViewHolder");
     }
 
     @Override
@@ -64,14 +71,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         return mContacts.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent i = new Intent(mContext, MainActivity2.class);
-        i.putExtra("CONTACT", contact);
-        mContext.startActivity(i);
-    }
-
-    public class ContactViewHolder extends RecyclerView.ViewHolder{
+    public class ContactViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public Button messageButton;
         public ImageView contactStatus;
