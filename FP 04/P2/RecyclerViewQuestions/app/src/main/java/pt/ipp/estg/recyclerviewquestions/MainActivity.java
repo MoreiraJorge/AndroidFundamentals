@@ -1,10 +1,12 @@
 package pt.ipp.estg.recyclerviewquestions;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -37,6 +39,18 @@ public class MainActivity extends AppCompatActivity {
         myRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         Log.d("MAIN_ACTIVITY","onCreate()");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == QuestionAdapter.REQUEST_CODE && resultCode == RESULT_OK) {
+            Question passedItem = (Question) data.getExtras().get("ITEM");
+            int position = (Integer) data.getExtras().get("RE_POS");
+            // deal with the item yourself
+            myAdapter.update(position,passedItem);
+            myAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pt.ipp.estg.recyclerviewquestions.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pt.ipp.estg.recyclerviewquestions.QuestionActivity;
@@ -22,6 +22,7 @@ import pt.ipp.estg.recyclerviewquestions.models.Question;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
 
+    public static final int REQUEST_CODE = 1;
     private Context mContext;
     private List<Question> mQuestions;
 
@@ -54,11 +55,12 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             public void onClick(View v) {
                 Intent i = new Intent(mContext, QuestionActivity.class);
                 i.putExtra("QUESTION", question);
-                mContext.startActivity(i);
+                i.putExtra("POS", position);
+                //mContext.startActivity(i);
+                ((Activity) mContext).startActivityForResult(i,REQUEST_CODE);
             }
         });
 
-        /*
         ImageView image = holder.questionStatus;
         if (question.getStatus().equals("Correto")) {
             image.setImageResource(R.drawable.green);
@@ -67,20 +69,20 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         } else {
             image.setImageResource(R.drawable.yellow);
         }
-        */
 
         Log.d("QUESTION_ADAPTER", "onBindViewHolder");
+    }
+
+    public void update(int pos, Question question){
+        mQuestions.remove(mQuestions.get(pos));
+        mQuestions.add(pos,question);
+        notifyItemChanged(pos);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         return mQuestions.size();
-    }
-
-    public void updateData(List<Question> viewModels) {
-        mQuestions.clear();
-        mQuestions.addAll(viewModels);
-        notifyDataSetChanged();
     }
 
     public class QuestionViewHolder extends RecyclerView.ViewHolder {

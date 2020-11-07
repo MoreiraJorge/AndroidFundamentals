@@ -20,6 +20,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private Button submit;
     private Question question;
 
+    private int pos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         submit = findViewById(R.id.button2);
 
         question = (Question) getIntent().getSerializableExtra("QUESTION");
+        pos = getIntent().getIntExtra("POS", 0);
 
         titleTextView.setText(question.getTitle());
         descriptionTextView.setText(question.getDescription());
@@ -52,4 +55,15 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         System.out.println("Estado da resposta: " + question.getStatus());
         finish();
     }
+
+    @Override
+    public void finish() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("ITEM", question);
+        returnIntent.putExtra("RE_POS", pos);
+        // setResult(RESULT_OK);
+        setResult(RESULT_OK, returnIntent); //By not passing the intent in the result, the calling activity will get null data.
+        super.finish();
+    }
+
 }
