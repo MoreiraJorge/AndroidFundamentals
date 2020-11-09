@@ -1,31 +1,28 @@
-package pt.ipp.estg.simplefragment;
+package pt.ipp.estg.simplefragment.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_1#newInstance} factory method to
- * create an instance of this fragment.
- */
+import pt.ipp.estg.simplefragment.MyInterface;
+import pt.ipp.estg.simplefragment.R;
+
 public class Fragment_1 extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Button bf1;
+    EditText ef1;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    MyInterface ctx;
 
     public Fragment_1() {
-        // Required empty public constructor
     }
 
     /**
@@ -39,26 +36,36 @@ public class Fragment_1 extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static Fragment_1 newInstance(String param1, String param2) {
         Fragment_1 fragment = new Fragment_1();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.ctx = (MyInterface) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_1, container, false);
+        View v =  inflater.inflate(R.layout.fragment_1, container, false);
+
+        bf1 = v.findViewById(R.id.button);
+        ef1 = v.findViewById(R.id.editText);
+
+        bf1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ctx.sendTextToFragment(ef1.getText().toString());
+            }
+        });
+
+        return v;
     }
 }
