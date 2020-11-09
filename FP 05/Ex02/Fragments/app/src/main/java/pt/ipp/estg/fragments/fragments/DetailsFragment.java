@@ -42,17 +42,25 @@ public class DetailsFragment extends Fragment {
         countryText = v.findViewById(R.id.textView5);
         descriptionText = v.findViewById(R.id.textView);
 
-        nameText.setText(city.getName());
-        countryText.setText(city.getCountry());
-        descriptionText.setText(city.getDescription());
+        if(city!=null){
+            nameText.setText(city.getName());
+            countryText.setText(city.getCountry());
+            descriptionText.setText(city.getDescription());
+        } else {
+            nameText.setText("Nome");
+            countryText.setText("País");
+            descriptionText.setText("Descrição");
+        }
+
+
 
         return v;
     }
 
-    public void update(City city){
-        nameText.setText(city.getName());
-        countryText.setText(city.getCountry());
-        descriptionText.setText(city.getDescription());
+    public void update(City newCity){
+        nameText.setText(newCity.getName());
+        countryText.setText(newCity.getCountry());
+        descriptionText.setText(newCity.getDescription());
     }
 
 }

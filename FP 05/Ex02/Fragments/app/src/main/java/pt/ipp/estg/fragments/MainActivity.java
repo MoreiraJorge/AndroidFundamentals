@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements MyInterface {
 
     @Override
     public void ReplaceDetails(City city) {
-        DetailsFragment newFragment = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment2);
+        DetailsFragment newFragment = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.detailsFragment);
 
         if(newFragment != null) {
             newFragment.update(city);
