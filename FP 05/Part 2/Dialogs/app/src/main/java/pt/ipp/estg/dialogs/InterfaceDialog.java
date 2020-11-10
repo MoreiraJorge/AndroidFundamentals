@@ -1,5 +1,7 @@
 package pt.ipp.estg.dialogs;
 
+import android.widget.TextView;
+
 import androidx.fragment.app.DialogFragment;
 
 public interface InterfaceDialog {
