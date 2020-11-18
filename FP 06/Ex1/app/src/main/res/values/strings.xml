@@ -6,4 +6,10 @@
     <string name="branco">Branco</string>
     <string name="amarelo">Amarelo</string>
     <string name="vermelho">Vermelho</string>
+    <string name="Sim">Sim</string>
+    <string name="Nao">Não</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reset">Reset</string>
+    <string name="deseja_apagar_todas_as_suas_defini_es">Deseja apagar todas as suas definições?</string>
 </resources>

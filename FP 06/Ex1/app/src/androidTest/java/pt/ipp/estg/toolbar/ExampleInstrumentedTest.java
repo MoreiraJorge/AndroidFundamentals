@@ -1,14 +1,22 @@
 package pt.ipp.estg.toolbar;
 
-import android.content.Context;
+import android.view.View;
 
-import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
+import org.hamcrest.Matcher;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -17,10 +25,38 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
+
+    @Rule
+    public ActivityTestRule<MainActivity> activityScenarioRule =
+            new ActivityTestRule<MainActivity>(MainActivity.class);
+
     @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("pt.ipp.estg.toolbar", appContext.getPackageName());
+    public void scrollToItemBelowFold_checkItsText() {
+        // First scroll to the position that needs to be matched and click onit.
+
+                onView(withId(R.id.recycler_view))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(2, new
+                        ViewAction() {
+                            @Override
+                            public Matcher<View> getConstraints() {
+                                return null;
+                            }
+                            @Override
+                            public String getDescription() {
+                                return "Click on specific button";
+                            }
+                            @Override
+                            public void perform(UiController uiController, View
+                                    view) {
+                                View button =
+                                        view.findViewById(R.id.message_button);
+                                // Maybe check for null
+                                button.performClick();
+                            }
+                        }
+                ));
+
+        String itemElementText = "Person 2";
+        onView(withId(R.id.texto_view)).check(matches(withText(itemElementText)));
     }
 }
