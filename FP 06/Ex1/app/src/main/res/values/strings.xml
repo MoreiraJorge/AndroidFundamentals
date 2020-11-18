@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Toolbar</string>
+    <string name="person">Person</string>
+    <string name="message">Message</string>
+    <string name="escolha_uma_cor_de_fundo">Escolha uma cor de fundo:</string>
+    <string name="branco">Branco</string>
+    <string name="amarelo">Amarelo</string>
+    <string name="vermelho">Vermelho</string>
+</resources>
