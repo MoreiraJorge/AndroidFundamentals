@@ -35,7 +35,7 @@ public class ExampleInstrumentedTest {
         // First scroll to the position that needs to be matched and click onit.
 
                 onView(withId(R.id.recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(2, new
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, new
                         ViewAction() {
                             @Override
                             public Matcher<View> getConstraints() {
@@ -56,7 +56,7 @@ public class ExampleInstrumentedTest {
                         }
                 ));
 
-        String itemElementText = "Person 2";
+        String itemElementText = "Person 0";
         onView(withId(R.id.texto_view)).check(matches(withText(itemElementText)));
     }
 }

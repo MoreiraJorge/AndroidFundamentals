@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Contact> createContactList(int size) {
         Random rd = new Random();
         List<Contact> tmp = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
+        tmp.add(0, new Contact("Person " + 0, true));
+        for (int i = 1; i < size; i++) {
             tmp.add(i, new Contact("Person " + i, rd.nextBoolean()));
         }
         return tmp;

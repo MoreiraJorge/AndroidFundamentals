@@ -122,9 +122,9 @@ public class SettingsActivity extends AppCompatActivity implements RadioGroup.On
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         mEditor = mSettings.edit();
-        //mEditor.putString("COLOR", "WHITE");
-        //mEditor.commit();
-        mEditor.clear().commit();
+        mEditor.putString("COLOR", "WHITE");
+        mEditor.commit();
+        //mEditor.clear().commit();
         dialog.dismiss();
         Log.d("SETTINGS_ACTIVITY","RESET PREFERENCES!");
     }
