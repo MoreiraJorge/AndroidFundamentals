@@ -1,0 +1,4 @@
+Q1 - 2
+Q2 - 1
+q4 - android.permission.INTERNET
+
