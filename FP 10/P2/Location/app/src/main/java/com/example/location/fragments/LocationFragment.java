@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,33 +19,21 @@ import android.widget.TextView;
 
 import com.example.location.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LocationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LocationFragment extends Fragment {
 
     private static final int REQUEST_FINE_LOCATION = 100;
     private FusedLocationProviderClient mFusedLocationCLient;
-    //private LocationRequest mLocationRequest;
 
     private Context mContext;
 
     private Button getLocationButton;
-    //private Button periodicUpdateButton;
-    //private Button stopPeriodicUpdateButton;
 
     private TextView latitude;
     private TextView longitude;
     private TextView accuracy;
-
-    //private TextView address;
 
     public LocationFragment() {
         // Required empty public constructor
@@ -94,16 +81,13 @@ public class LocationFragment extends Fragment {
         if (ActivityCompat.checkSelfPermission(mContext,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationCLient.getLastLocation().addOnSuccessListener((Activity) mContext,
-                    new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if (location != null) {
-                        latitude.setText(String.valueOf(location.getLatitude()));
-                        longitude.setText(String.valueOf(location.getLongitude()));
-                        accuracy.setText(String.valueOf(location.getAccuracy()));
-                    }
-                }
-            }).addOnFailureListener((Activity) mContext, new OnFailureListener() {
+                    location -> {
+                        if (location != null) {
+                            latitude.setText(String.valueOf(location.getLatitude()));
+                            longitude.setText(String.valueOf(location.getLongitude()));
+                            accuracy.setText(String.valueOf(location.getAccuracy()));
+                        }
+                    }).addOnFailureListener((Activity) mContext, new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.d("Error", "" + e.getMessage());
@@ -116,20 +100,4 @@ public class LocationFragment extends Fragment {
         ActivityCompat.requestPermissions((Activity) mContext,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
     }
-
-    /*
-    private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions();
-        }
-
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationCLient.requestLocationUpdates(locationRequest, locationCallback, null);
-        }
-    }
-
-    private void stopLocationUpdates() {
-        mFusedLocationCLient.removeLocationUpdates(locationCallback);
-    }
-    */
 }
