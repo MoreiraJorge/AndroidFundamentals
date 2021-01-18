@@ -1,4 +1,4 @@
-package com.example.sensorlist;
+package pt.ipp.estg.sensorlist;
 
 import org.junit.Test;
 
